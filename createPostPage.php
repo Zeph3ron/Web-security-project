@@ -16,7 +16,7 @@
         }
         ?>
         <br/>
-        <main class="ui page grid">
+        <main class="ui page grid container">
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
@@ -24,17 +24,28 @@
                     </div>
                 </div>
             </div>
-            <form class="ui form" action="src/createPost.php" method="post">
-                <div class="field">
-                    <label>Title</label>
-                    <input name="Title" type="text" placeholder="Title"/>
+            <div class="row">
+                <div class="column">
+                    <form class="ui form" action="src/createPost.php" method="post">
+                        <div class="field">
+                            <label>Title</label>
+                            <input name="Title" type="text" placeholder="Title"/>
+                        </div>
+                        <div class="field">
+                            <label>Post content</label>
+                            <textarea name="Content" placeholder="Content"></textarea>
+                        </div>
+                        <button class="ui fluid primary button" type="submit">Submit</button>
+                    </form>
                 </div>
-                <div class="field">
-                    <label>Post content</label>
-                    <textarea name="Content" placeholder="Content"></textarea>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <form action="mainWallPage.php" method="post">
+                        <button class="ui fluid primary button"type="submit">Back to posts</button>
+                    </form>
                 </div>
-                <button class="ui fluid primary button" type="submit">Submit</button>
-            </form>
+            </div>
         </main>
     </body>
 </html>

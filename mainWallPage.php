@@ -27,7 +27,7 @@
         }
         ?>
         <br/>
-        <main class="ui page grid">
+        <main class="ui page grid container">
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
@@ -36,22 +36,24 @@
                     </div>
                 </div>
             </div>
-            <div class="ui middle aligned divided list">
-                <?php
-                for ($i = 0; $i < count($posts); $i++)
-                {
-                    echo $postHandler->getPostHtml($posts[$i]);
-                }
-                ?>
-                <form action="createPostPage.php" method="post">
-                    <br/>   
-                    <button class="ui fluid primary button"type="submit">Create post</button>
-                </form>
+            <div class="row">
+                <div class="ui middle aligned divided list column">
+                    <?php
+                    for ($i = 0; $i < count($posts); $i++)
+                    {
+                        echo $postHandler->getPostHtml($posts[$i]);
+                    }
+                    ?>
+                    <form action="createPostPage.php" method="post">
+                        <br/>   
+                        <button class="ui fluid primary button"type="submit">Create post</button>
+                    </form>
 
-                <form action="src/logoutAccount.php">
-                    <br/>   
-                    <button class="ui fluid primary button"type="submit">Log out</button>
-                </form>
+                    <form action="src/logoutAccount.php">
+                        <br/>   
+                        <button class="ui fluid primary button"type="submit">Log out</button>
+                    </form>
+                </div>
             </div>
         </main>
     </body>

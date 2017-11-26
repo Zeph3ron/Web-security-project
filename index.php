@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     </head>
     <body>
         <?php
-        echo 'Index.';
+        header('location:loginPage.php');
         ?>
     </body>
 </html>

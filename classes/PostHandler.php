@@ -74,10 +74,10 @@ class PostHandler {
         return '<div class="item">'
                 . '<img class="ui avatar image" src="resources/images/bill-small.png">'
                 . '<div class="content">'
-                . '<a class="header" href="displayPostPage.php?post_id=' . $post->id . '">' . $post->title . '</a>'
+                . '<a class="header" href="displayPostPage.php?post_id=' . $post->id . '">' . $post->title . '</a><font size="1">Created on '.date_format($post -> postDate, 'd/m/Y H:i').'</font>'
                 . '</div>'
                 . '</div>';
-    }
+    } 
 
     private function getDbHandler()
     {

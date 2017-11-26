@@ -43,7 +43,7 @@
         }
         ?>
         <br/>
-        <main class="ui page grid">
+        <main class="ui page grid container">
             <div class="row">
                 <div class="column">
                     <div class="ui cards">
@@ -51,14 +51,14 @@
                             <div class="content">
                                 <img class="right floated mini ui image" src="resources/images/bill-small.png">
                                 <div class="header">
-                                    <?php echo $postOwner->userName ?>
+                                    Created by <?php echo $postOwner->userName ?>
                                 </div>
                                 <div class="description">
                                     <?php echo $postOwner->userDescription ?>
                                 </div>
                                 <div class="meta">
                                     <br/>
-                                    Has <?php echo $nrOfPosts ?> posts. 
+                                    This user has <?php echo $nrOfPosts ?> posts. 
                                 </div>
                             </div>
                         </div>
@@ -73,25 +73,25 @@
                     </div>
                 </div>
             </div>
+            <?php
+            if ($userId == $postOwner->id)
+            {
+                echo '<div><form action="editPostPage.php" method="post">'
+                        . '<br/>'
+                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
+                        . '<button class="ui fluid primary button"type="submit">Edit post</button>'
+                    . '</form></div>';
+                echo '<div><form action="src/deletePost.php" method="post">'
+                        . '<br/>'
+                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
+                        . '<button class="ui fluid primary button"type="submit">Delete post</button>'
+                    . '</form></div>';
+            }
+            ?>
             <form action="mainWallPage.php" method="post">
                 <br/>
                 <button class="ui fluid primary button"type="submit">Back to posts</button>
             </form>
-            <?php
-            if ($userId == $postOwner->id)
-            {
-                echo '<form action="editPostPage.php" method="post">'
-                        . '<br/>'
-                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
-                        . '<button class="ui fluid primary button"type="submit">Edit post</button>'
-                    . '</form>';
-                echo '<form action="src/deletePost.php" method="post">'
-                        . '<br/>'
-                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
-                        . '<button class="ui fluid primary button"type="submit">Delete post</button>'
-                    . '</form>';
-            }
-            ?>
         </main>
     </body>
 </html>

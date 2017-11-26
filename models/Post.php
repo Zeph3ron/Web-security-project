@@ -19,7 +19,7 @@ class Post {
         $this->id = $id;
         $this->ownerId = $ownerId;
         $this->title = $title;
-        $this->postDate = $postDate;
+        $this->postDate = new DateTime($postDate);
         $this->nrOfVotes = $nrOfVotes;
         $this->content = $content;
     }
