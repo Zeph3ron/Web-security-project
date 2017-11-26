@@ -31,11 +31,10 @@ class UserHandler {
      */
     function loginUser($username, $password, &$errors)
     {
-        $dbHandler = $this->getDbHandler();
         $user = null;
         //If 'userExistsComplex' returns true, the '$user' variable
         //will contain the user information from the database.
-        if ($this->userExistsComplex($dbHandler, $username, $user))
+        if ($this->getUserByName($username, $user))
         {
             //If 'lastFailedLogin' is not set, we skip checking for failed attempts.
             if (isset($user->lastFailedLogin))
@@ -49,7 +48,7 @@ class UserHandler {
                     if ($dateNow > $lastFailedModified)
                     {
                         //If not, we reset the failed attempts
-                        $this->resetFailedLogins($dbHandler, $username);
+                        $this->resetFailedLogins($username);
                     }
                     else
                     {
@@ -62,7 +61,12 @@ class UserHandler {
             //If it reaches here we proceed to login normally
             if (!$this->attemptLogin($password, $user->passwordHash, $errors))
             {
-                $this->incrementFailedLogins($dbHandler, $username);
+                $this->incrementFailedLogins($username);
+            }
+            else
+            {
+                session_start();
+                $_SESSION['user_id'] = $user-> id;
             }
         }
         else
@@ -111,9 +115,31 @@ class UserHandler {
      * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
      * @return boolean Returns true if the user existed, else false.
      */
-    private function userExistsComplex($dbHandler, $username, &$user)
+    function getUserByName($username, &$user)
     {
+        $dbHandler = $this->getDbHandler();
         $users = $dbHandler->getRecords("User", "Username", $username, PDO::PARAM_STR);
+        if (count($users) > 0)
+        {
+            //NOTE: Adding/editing/removing columns in the database might affect the indexes.
+            $dbUserValues = $users[0];
+            $user = new User(
+                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], $dbUserValues[8]);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Attempts to get a user model that represents the user in the database.
+     * @param type $user_id The user's id.
+     * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
+     * @return boolean Returns true if the user existed, else false.
+     */
+    function getUserById($user_id, &$user)
+    {
+        $dbHandler = $this->getDbHandler();
+        $users = $dbHandler->getRecords("User", "Id", $user_id, PDO::PARAM_INT);
         if (count($users) > 0)
         {
             //NOTE: Adding/editing/removing columns in the database might affect the indexes.
@@ -130,8 +156,9 @@ class UserHandler {
      * @param type $dbHandler The database handler instance to use.
      * @param type $username The user's username.
      */
-    private function incrementFailedLogins($dbHandler, $username)
+    private function incrementFailedLogins($username)
     {
+        $dbHandler = $this->getDbHandler();
         $dbHandler->incrementRecord("User", "Failed_login_attempts", "Username", $username);
         $dbHandler->updateRecord("User", "Last_failed_login", date("Y-m-d H:i:s"), "Username", $username, PDO::PARAM_STR);
     }
@@ -141,8 +168,9 @@ class UserHandler {
      * @param type $dbHandler The database handler instance to use.
      * @param type $username The user's username.
      */
-    private function resetFailedLogins($dbHandler, $username)
+    private function resetFailedLogins($username)
     {
+        $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Failed_login_attempts", 0, "Username", $username, PDO::PARAM_INT);
     }
 

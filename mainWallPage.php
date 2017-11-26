@@ -19,82 +19,39 @@ and open the template in the editor.
         {
             header('location:loginPage.php');
         }
+        else
+        {
+            require_once dirname(__FILE__) . '../classes/PostHandler.php';
+            require_once dirname(__FILE__) . '../classes/UserHandler.php';
+            $userHandler = new UserHandler();
+            $postHandler = new PostHandler();
+            
+            $user_id = $_SESSION['user_id'];
+            $userHandler->getUserById($user_id, $user);
+            $posts = $postHandler ->getAllPosts();
+        }
         ?>
-        <div class="ui comments">
-            <h3 class="ui dividing header">Comments</h3>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Matt</a>
-                    <div class="metadata">
-                        <span class="date">Today at 5:42PM</span>
-                    </div>
-                    <div class="text">How artistic! </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
+        <br/>
+        <main class="ui page grid">
+            <div class="row">
+                <div class="column">
+                    <div class="ui message main">
+                        <h1 class="ui header">Hello there <?php echo $user -> userName?>! </h1>
+                        <p>This is your landing page. Here you can get an overview all post created by you and other users.</p>
                     </div>
                 </div>
             </div>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Elliot Fu</a>
-                    <div class="metadata">
-                        <span class="date">Yesterday at 12:30AM</span>
-                    </div>
-                    <div class="text">
-                        <p>This has been very useful for my research. Thanks as well!</p>
-                    </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
-                    </div>
-                </div>
-                <div class="comments">
-                    <div class="comment">
-                        <a class="avatar">
-                            <img src="resources/images/bill-small.png">
-                        </a>
-                        <div class="content">
-                            <a class="author">Jenny Hess</a>
-                            <div class="metadata">
-                                <span class="date">Just now</span>
-                            </div>
-                            <div class="text">Elliot you are always so right :) </div>
-                            <div class="actions">
-                                <a class="reply">Reply</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="ui middle aligned divided list">
+                <?php 
+                for($i = 0;$i < count($posts);$i++)
+                {
+                    echo $postHandler ->getPostHtml($posts[$i]);
+                }
+                ?>
+                <form action="src/logoutAccount.php">
+                    <button class="ui fluid primary button"type="submit">Log out</button>
+                </form>
             </div>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Joe Henderson</a>
-                    <div class="metadata">
-                        <span class="date">5 days ago</span>
-                    </div>
-                    <div class="text">Dude, this is awesome. Thanks so much </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
-                    </div>
-                </div>
-            </div>
-            <form class="ui reply form">
-                <div class="field">
-                    <textarea></textarea>
-                </div>
-                <div class="ui blue labeled submit icon button"><i class="icon edit"></i> Add Reply </div>
-            </form>
-            <form action="src/logoutAccount.php">
-                <input type="submit" value="Log out"/>
-            </form>
-        </div>
+        </main>
     </body>
 </html>

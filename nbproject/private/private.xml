@@ -4,14 +4,22 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/index.php</file>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/.htaccess</file>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/editProfilePage.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/mainWallPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/DatabaseHandler.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/src/loginAccount.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/Comment.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/config.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/src/registerAccount.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/PostHandler.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/src/logoutAccount.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/.htaccess</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/editProfilePage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/create_db.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/ValidationHandler.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/Post.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/User.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/loginPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/UserHandler.php</file>
         </group>
     </open-files>
 </project-private>
