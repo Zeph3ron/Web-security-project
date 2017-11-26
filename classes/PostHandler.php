@@ -55,13 +55,26 @@ class PostHandler {
         $dbHandler = $this->getDbHandler();
         $dbHandler->addRecord("Post", ["Owner_id", "Title", "Post_date", "Content"], [$ownerId, $title, date("Y-m-d H:i:s"), $content], [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_STR, PDO::PARAM_STR]);
     }
+    
+    function deletePost($postId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler ->deleteRecord("Post", "id", $postId, PDO::PARAM_INT);
+    }
+    
+    function updatePost($postId, $title, $content)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->updateRecord("Post", "Title", $title, "Id", $postId, PDO::PARAM_STR);
+        $dbHandler->updateRecord("Post", "Content", $content, "Id", $postId, PDO::PARAM_STR);
+    }
 
     function getPostHtml($post)
     {
         return '<div class="item">'
                 . '<img class="ui avatar image" src="resources/images/bill-small.png">'
                 . '<div class="content">'
-                . '<a class="header" href="postpage.php?post=' . $post->id . '">' . $post->title . '</a>'
+                . '<a class="header" href="displayPostPage.php?post_id=' . $post->id . '">' . $post->title . '</a>'
                 . '</div>'
                 . '</div>';
     }

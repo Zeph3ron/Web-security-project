@@ -5,6 +5,7 @@
  * Handles all CRUD operations on the database. Is supposed to work with any mysql database.
  */
 class DatabaseHandler {
+
     var $host;
     var $userName;
     var $password;
@@ -50,7 +51,7 @@ class DatabaseHandler {
         $dropDatabase = "DROP DATABASE $dbName";
         $this->conn->exec($dropDatabase);
     }
-    
+
     /**
      * Uses the existing PDO connection to connect to the provided database.
      * @param type $dbName The name of the database in string format.
@@ -108,11 +109,11 @@ class DatabaseHandler {
             $column = $columns[$i];
             $value = $values[$i];
             $pdoBindParameter = $pdoBindParameters[$i];
-            $stmt->bindValue(":$column",$value, $pdoBindParameter);
+            $stmt->bindValue(":$column", $value, $pdoBindParameter);
         }
         $stmt->execute();
     }
-    
+
     /**
      * Gets every column (*) from the provided table based on some WHERE condition.
      * @param type $tableName The name of the table.
@@ -125,11 +126,11 @@ class DatabaseHandler {
     {
         $sql = "SELECT * FROM $tableName WHERE $columnToCheck = :$columnToCheck;";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(":$columnToCheck",$valueToCheck, $pdoBindParameter);
-        $stmt ->execute();
+        $stmt->bindValue(":$columnToCheck", $valueToCheck, $pdoBindParameter);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     /**
      * 
      * @param type $tableName The name of the table.
@@ -139,10 +140,10 @@ class DatabaseHandler {
     {
         $sql = "SELECT * FROM $tableName;";
         $stmt = $this->conn->prepare($sql);
-        $stmt ->execute();
+        $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     /**
      * Updates a record in the database. NOTE: This method is not safe to directly handle user input.
      * @param type $tableName The name of the table.
@@ -153,13 +154,13 @@ class DatabaseHandler {
      * @return type
      */
     function updateRecord($tableName, $columnToUpdate, $newValue, $conditionalColumn, $condition, $pdoBindParameter)
-    { 
+    {
         $sql = "UPDATE $tableName SET $columnToUpdate = :newValue WHERE $conditionalColumn = '$condition';";
         $stmt = $this->conn->prepare($sql);
-        $stmt ->bindValue(":newValue", $newValue, $pdoBindParameter);
-        $stmt ->execute();
+        $stmt->bindValue(":newValue", $newValue, $pdoBindParameter);
+        $stmt->execute();
     }
-    
+
     /**
      * Increments a record in the database by 1. NOTE: This method is not safe to directly handle user input.
      * @param type $tableName The name of the table.
@@ -172,9 +173,18 @@ class DatabaseHandler {
     {
         $sql = "UPDATE $tableName SET $columnToIncrement = $columnToIncrement + 1 WHERE $conditionalColumn = '$condition';";
         $stmt = $this->conn->prepare($sql);
-        $stmt ->execute();
+        $stmt->execute();
     }
-   
+
+    function deleteRecord($tableName, $conditionalColumn, $condition, $pdoBindParameter)
+    {
+        $test = "DELETE FROM Post WHERE id = 1";
+        $sql = "DELETE FROM $tableName WHERE $conditionalColumn = :condition";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(":condition", $condition, $pdoBindParameter);
+        $stmt->execute();
+    }
+
     /**
      * Called every time a new DBO object is instantiated.
      */
@@ -185,4 +195,5 @@ class DatabaseHandler {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
     }
+
 }

@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -25,10 +20,10 @@ and open the template in the editor.
             require_once dirname(__FILE__) . '../classes/UserHandler.php';
             $userHandler = new UserHandler();
             $postHandler = new PostHandler();
-            
+
             $user_id = $_SESSION['user_id'];
             $userHandler->getUserById($user_id, $user);
-            $posts = $postHandler ->getAllPosts();
+            $posts = $postHandler->getAllPosts();
         }
         ?>
         <br/>
@@ -36,19 +31,25 @@ and open the template in the editor.
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header">Hello there <?php echo $user -> userName?>! </h1>
-                        <p>This is your landing page. Here you can get an overview all post created by you and other users.</p>
+                        <h1 class="ui header">Hello there <?php echo $user->userName ?>! </h1>
+                        <p>This is your landing page. Here you can get an overview of all post created by you and other users.</p>
                     </div>
                 </div>
             </div>
             <div class="ui middle aligned divided list">
-                <?php 
-                for($i = 0;$i < count($posts);$i++)
+                <?php
+                for ($i = 0; $i < count($posts); $i++)
                 {
-                    echo $postHandler ->getPostHtml($posts[$i]);
+                    echo $postHandler->getPostHtml($posts[$i]);
                 }
                 ?>
+                <form action="createPostPage.php" method="post">
+                    <br/>   
+                    <button class="ui fluid primary button"type="submit">Create post</button>
+                </form>
+
                 <form action="src/logoutAccount.php">
+                    <br/>   
                     <button class="ui fluid primary button"type="submit">Log out</button>
                 </form>
             </div>

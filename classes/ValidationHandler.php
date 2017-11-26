@@ -107,5 +107,49 @@ class ValidationHandler {
             array_push($errors, "The " . $fieldname . " field must be set.");
         }
     }
+    
+    function validatePostTitle($title, &$errors)
+    {
+        if (isset($title))
+        {
+            if (!is_string($title) || $title === '')
+            {
+                array_push($errors, "The title cannot be empty.");
+            }
+            else
+            {
+                if (strlen($title)< 5 ||strlen($title) > 30)
+                {
+                    array_push($errors, "The title length must be between 5 and 30 characters.");
+                }
+            }
+        }
+        else
+        {
+            array_push($errors, "The title field must be set.");
+        }
+    }
+    
+    function validatePostContent($content, &$errors)
+    {
+        if (isset($content))
+        {
+            if (!is_string($content) || $content === '')
+            {
+                array_push($errors, "The content of the post cannot be empty.");
+            }
+            else
+            {
+                if (strlen($content)< 5 ||strlen($content) > 200)
+                {
+                    array_push($errors, "The length of the post must be between 5 and 200 characters.");
+                }
+            }
+        }
+        else
+        {
+            array_push($errors, "The content field must be set.");
+        }
+    }
 
 }

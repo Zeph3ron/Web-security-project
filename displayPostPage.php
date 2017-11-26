@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -21,7 +16,8 @@ and open the template in the editor.
         }
         else
         {
-            if (!isset($_GET['post']) || $_GET['post'] === '')
+            $userId = $_SESSION['user_id'];
+            if (!isset($_GET['post_id']) || $_GET['post_id'] === '')
             {
                 header('location:mainWallPage.php');
             }
@@ -29,7 +25,7 @@ and open the template in the editor.
             {
                 require_once dirname(__FILE__) . '../classes/PostHandler.php';
                 require_once dirname(__FILE__) . '../classes/UserHandler.php';
-                $postId = $_GET['post'];
+                $postId = $_GET['post_id'];
                 $postHandler = new PostHandler();
                 $userHandler = new UserHandler();
 
@@ -77,8 +73,25 @@ and open the template in the editor.
                     </div>
                 </div>
             </div>
-            <div class="ui middle aligned divided list">
-            </div>
+            <form action="mainWallPage.php" method="post">
+                <br/>
+                <button class="ui fluid primary button"type="submit">Back to posts</button>
+            </form>
+            <?php
+            if ($userId == $postOwner->id)
+            {
+                echo '<form action="editPostPage.php" method="post">'
+                        . '<br/>'
+                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
+                        . '<button class="ui fluid primary button"type="submit">Edit post</button>'
+                    . '</form>';
+                echo '<form action="src/deletePost.php" method="post">'
+                        . '<br/>'
+                        . '<input type="hidden" value="'.$post -> id.'" name="post_id" />'
+                        . '<button class="ui fluid primary button"type="submit">Delete post</button>'
+                    . '</form>';
+            }
+            ?>
         </main>
     </body>
 </html>
