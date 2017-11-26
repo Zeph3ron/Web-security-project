@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__). '../DatabaseHandler.php';
+require_once dirname(__FILE__) . '../DatabaseHandler.php';
 require_once dirname(__FILE__) . '../../models/Post.php';
 require_once dirname(__FILE__) . '../../config.php';
 
@@ -22,19 +22,47 @@ class PostHandler {
         return $posts;
     }
 
+    function getPost($postId)
+    {
+        $posts = $this->getAllPosts();
+        $post = null;
+        for ($i = 0; $i < count($posts); $i++)
+        {
+            if ($posts[$i]->id === $postId)
+            {
+                $post = $posts[$i];
+            }
+        }
+        return $post;
+    }
+
+    function getNrOfPosts($userId)
+    {
+        $posts = $this->getAllPosts();
+        $count = 0;
+        for ($i = 0; $i < count($posts); $i++)
+        {
+            if ($posts[$i]->ownerId === $userId)
+            {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
     function createPost($ownerId, $title, $content)
     {
-        $dbHandler = $this-> getDbHandler();
-        $dbHandler-> addRecord("Post", ["Owner_id", "Title", "Post_date", "Content"], [$ownerId, $title, date("Y-m-d H:i:s"), $content], [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_STR, PDO::PARAM_STR]);
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->addRecord("Post", ["Owner_id", "Title", "Post_date", "Content"], [$ownerId, $title, date("Y-m-d H:i:s"), $content], [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_STR, PDO::PARAM_STR]);
     }
-    
+
     function getPostHtml($post)
     {
         return '<div class="item">'
-                    . '<img class="ui avatar image" src="resources/images/bill-small.png">'
-                    . '<div class="content">'
-                        . '<a class="header">'. $post -> title .'</a>'
-                    . '</div>'
+                . '<img class="ui avatar image" src="resources/images/bill-small.png">'
+                . '<div class="content">'
+                . '<a class="header" href="postpage.php?post=' . $post->id . '">' . $post->title . '</a>'
+                . '</div>'
                 . '</div>';
     }
 
@@ -44,4 +72,5 @@ class PostHandler {
         $dbHandler->connectToDb(DATABASE_NAME);
         return $dbHandler;
     }
+
 }

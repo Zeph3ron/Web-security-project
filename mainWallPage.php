@@ -10,7 +10,7 @@ and open the template in the editor.
         <script src="scripts/js/jquery-3.2.1.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
         <link rel="stylesheet" href="scripts/css/semantic.min.css"/>
-        <title></title>
+        <title>Main page</title>
     </head>
     <body>
         <?php
