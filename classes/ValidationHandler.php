@@ -18,14 +18,14 @@ class ValidationHandler {
             }
             else
             {
-                if (!strlen($username) >= 8 && !strlen($username) <= 30)
+                if (!strlen($username) >= 5 && !strlen($username) <= 30)
                 {
-                    array_push($errors, "The username must be between 8 and 30 characters long.");
+                    array_push($errors, "The username must be between 5 and 30 characters long.");
                 }
                 else
                 {
-                    $accHandler = new UserHandler();
-                    if ($accHandler->userExists($username))
+                    $userHandler = new UserHandler();
+                    if ($userHandler->userExists($username))
                     {
                         array_push($errors, "This username already exists.");
                     }
@@ -107,7 +107,7 @@ class ValidationHandler {
             array_push($errors, "The " . $fieldname . " field must be set.");
         }
     }
-    
+
     function validatePostTitle($title, &$errors)
     {
         if (isset($title))
@@ -118,7 +118,7 @@ class ValidationHandler {
             }
             else
             {
-                if (strlen($title)< 5 ||strlen($title) > 30)
+                if (strlen($title) < 5 || strlen($title) > 30)
                 {
                     array_push($errors, "The title length must be between 5 and 30 characters.");
                 }
@@ -129,7 +129,7 @@ class ValidationHandler {
             array_push($errors, "The title field must be set.");
         }
     }
-    
+
     function validatePostContent($content, &$errors)
     {
         if (isset($content))
@@ -140,7 +140,7 @@ class ValidationHandler {
             }
             else
             {
-                if (strlen($content)< 5 ||strlen($content) > 1600)
+                if (strlen($content) < 5 || strlen($content) > 1600)
                 {
                     array_push($errors, "The length of the post must be between 5 and 1600 characters.");
                 }
@@ -149,6 +149,50 @@ class ValidationHandler {
         else
         {
             array_push($errors, "The content field must be set.");
+        }
+    }
+
+    function validateUserDescription($description, &$errors)
+    {
+        if (isset($description))
+        {
+            if (!is_string($description) || $description === '')
+            {
+                return;
+            }
+            else
+            {
+                if (strlen($description) > 200)
+                {
+                    array_push($errors, "The length of your profile description cannot exceed 200 characters.");
+                }
+            }
+        }
+    }
+
+    function validateDisplayName($displayName, $userId, &$errors)
+    {
+        if (isset($displayName))
+        {
+            if (!is_string($displayName) || $displayName === '')
+            {
+                return;
+            }
+            else
+            {
+                if (strlen($displayName) < 5 || strlen($displayName) > 30)
+                {
+                    array_push($errors, "The length of your profile display name should be between 5 and 30 characters.");
+                }
+                else
+                {
+                    $userHandler = new UserHandler();
+                    if ($userHandler->displayNameExists($displayName, $userId))
+                    {
+                        array_push($errors, "This display name is already taken.");
+                    }
+                }
+            }
         }
     }
 

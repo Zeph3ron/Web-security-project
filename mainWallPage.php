@@ -48,7 +48,10 @@
                         <br/>   
                         <button class="ui fluid primary button"type="submit">Create post</button>
                     </form>
-
+                    <form action="editProfilePage.php" method="post">
+                        <br/>   
+                        <button class="ui fluid primary button"type="submit">Edit profile</button>
+                    </form>
                     <form action="src/logoutAccount.php">
                         <br/>   
                         <button class="ui fluid primary button"type="submit">Log out</button>

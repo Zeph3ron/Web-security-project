@@ -117,7 +117,7 @@
                 var message = document.getElementById('usernameConfirmMessage');
                 var badColor = "#ff6666";
                 //Regular expression for username length
-                var re = /^[a-zA-Z0-9_-]{8,30}$/;
+                var re = /^[a-zA-Z0-9_-]{5,30}$/;
                 if (re.test(username.value)) {
                     message.innerHTML = "";
                 } else {
@@ -135,7 +135,7 @@
                 <fieldset>
                     <div class="field">
                         <label>Username</label>
-                        <input type="text" id="username" placeholder="Username" name="Username" pattern=".{8,30}" maxlength="30" required="required" onkeyup="validateUsername();" oninput="validateUsername();"/><span id="usernameConfirmMessage"></span><br/>
+                        <input type="text" id="username" placeholder="Username" name="Username" pattern=".{5,30}" maxlength="30" required="required" onkeyup="validateUsername();" oninput="validateUsername();"/><span id="usernameConfirmMessage"></span><br/>
                     </div>
                     <div class="field">
                         <label>Email</label>

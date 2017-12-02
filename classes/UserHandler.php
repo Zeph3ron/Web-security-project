@@ -107,6 +107,18 @@ class UserHandler {
         }
         return false;
     }
+    
+    function displayNameExists($displayName, $userId)
+    {
+        $dbHandler = $this->getDbHandler();
+        
+        $users = $dbHandler->getRecords("User", "Display_name", $displayName, PDO::PARAM_STR);
+        if (count($users) > 0 && $users[0][0] != $userId)
+        {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Checks to see if the user already exists in the database.
@@ -150,6 +162,13 @@ class UserHandler {
         }
         return false;
     }
+    
+    function updateUserProfile($userId, $newDisplayName, $newDescription)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->updateRecord("User", "Display_name", $newDisplayName, "Id", $userId, PDO::PARAM_STR);
+        $dbHandler->updateRecord("User", "User_description", $newDescription, "Id", $userId, PDO::PARAM_STR);
+    }
 
     /**
      * Increments the 'Failed_login_attempts' column by 1.
@@ -172,7 +191,7 @@ class UserHandler {
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Failed_login_attempts", 0, "Username", $username, PDO::PARAM_INT);
-    }
+    }   
 
     /**
      * Creates an instance of the database handler using information defined in the 'config.php' file.

@@ -26,6 +26,9 @@ if (count($errors) > 0)
     {
         echo "&nbsp;&nbsp;- " . $error . "<br/>";
     }
+    echo '<br/>'
+    . '<button class="ui fluid primary button"type="submit" onclick="window.location = \'../registrationPage.php\'";>Back to registration page.</button>'
+    . '</form>';
 }
 else
 {
@@ -33,5 +36,8 @@ else
     $userHandler = new UserHandler();
     $userHandler->createUser($username, $email, $password1);
     echo 'Your account was successfully created';
+    echo '<br/>'
+    . '<button class="ui fluid primary button"type="submit" onclick="window.location = \'../loginPage.php\'";>Back to login page.</button>'
+    . '</form>';
 }
 ?>

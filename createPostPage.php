@@ -37,13 +37,10 @@
                         </div>
                         <button class="ui fluid primary button" type="submit">Submit</button>
                     </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <form action="mainWallPage.php" method="post">
-                        <button class="ui fluid primary button"type="submit">Back to posts</button>
-                    </form>
+                    <div>
+                        <br/>
+                        <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';">Back to posts</button>
+                    </div>
                 </div>
             </div>
         </main>

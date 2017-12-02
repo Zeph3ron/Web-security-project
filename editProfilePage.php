@@ -5,7 +5,7 @@
         <script src="scripts/js/jquery-3.2.1.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
         <link rel="stylesheet" href="scripts/css/semantic.min.css"/>
-        <title></title>
+        <title>Edit profile</title>
     </head>
     <body>
         <?php
@@ -14,82 +14,46 @@
         {
             header('location:loginPage.php');
         }
+        else
+        {
+            require_once dirname(__FILE__) . '/classes/UserHandler.php';
+            $userHandler = new UserHandler();
+            $user_id = $_SESSION['user_id'];
+            $userHandler->getUserById($user_id, $user);
+        }
         ?>
-        <div class="ui comments">
-            <h3 class="ui dividing header">Comments</h3>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Matt</a>
-                    <div class="metadata">
-                        <span class="date">Today at 5:42PM</span>
-                    </div>
-                    <div class="text">How artistic! </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
+        <br/>
+        <main class="ui page grid container">
+            <div class="row">
+                <div class="column">
+                    <div class="ui message main">
+                        <p>Here you can edit your profile. Just change the contents of the fields to your liking and press submit.</p>
                     </div>
                 </div>
             </div>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Elliot Fu</a>
-                    <div class="metadata">
-                        <span class="date">Yesterday at 12:30AM</span>
-                    </div>
-                    <div class="text">
-                        <p>This has been very useful for my research. Thanks as well!</p>
-                    </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
-                    </div>
-                </div>
-                <div class="comments">
-                    <div class="comment">
-                        <a class="avatar">
-                            <img src="resources/images/bill-small.png">
-                        </a>
-                        <div class="content">
-                            <a class="author">Jenny Hess</a>
-                            <div class="metadata">
-                                <span class="date">Just now</span>
-                            </div>
-                            <div class="text">Elliot you are always so right :) </div>
-                            <div class="actions">
-                                <a class="reply">Reply</a>
-                            </div>
+            <div class="row">
+                <div class="column">
+                    <form class="ui form" action="src/editProfile.php" method="post">
+                        <div class="field">
+                            <label>Username</label>
+                            <p><?php echo $user->userName; ?></p>
                         </div>
+                        <div class="field">
+                            <label>Display name - (Optional)</label>
+                            <input name="Display_name" type="text" placeholder="Display name" value="<?php echo htmlentities($user->displayName); ?>" pattern=".{5,30}" maxlength="30" title="Should be between 5 and 30 characters.">
+                        </div>
+                        <div class="field">
+                            <label>Description</label>
+                            <textarea name="User_description" placeholder="Write a short description of yourself" minlength="10" maxlength="200"><?php echo htmlentities($user->userDescription); ?></textarea>
+                        </div>
+                        <button class="ui fluid primary button" type="submit">Submit changes</button>
+                    </form>
+                    <div>
+                        <br/>
+                        <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';">Back to posts</button>
                     </div>
                 </div>
             </div>
-            <div class="comment">
-                <a class="avatar">
-                    <img src="resources/images/bill-small.png">
-                </a>
-                <div class="content">
-                    <a class="author">Joe Henderson</a>
-                    <div class="metadata">
-                        <span class="date">5 days ago</span>
-                    </div>
-                    <div class="text">Dude, this is awesome. Thanks so much </div>
-                    <div class="actions">
-                        <a class="reply">Reply</a>
-                    </div>
-                </div>
-            </div>
-            <form class="ui reply form">
-                <div class="field">
-                    <textarea></textarea>
-                </div>
-                <div class="ui blue labeled submit icon button"><i class="icon edit"></i> Add Reply </div>
-            </form>
-            <form action="src/logoutAccount.php">
-                <input type="submit" value="Log out"/>
-            </form>
-        </div>
+        </main> 
     </body>
 </html>

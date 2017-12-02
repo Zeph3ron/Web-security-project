@@ -33,7 +33,7 @@
                 <fieldset>
                     <div class="field">
                         <label>Username</label>
-                        <input type="text" id="username" placeholder="Username" name="Username" required="required"<br/><br/>
+                        <input type="text" id="username" placeholder="Username" name="Username" required="required" minlength="5" maxlength="30"<br/><br/>
                     </div>
                     <div class="field">
                         <label>Password</label>
