@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '../DatabaseHandler.php';
+require_once dirname(__FILE__) . '/DatabaseHandler.php';
 require_once dirname(__FILE__) . '../../models/User.php';
 require_once dirname(__FILE__) . '../../config.php';
 

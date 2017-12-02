@@ -24,7 +24,7 @@
             {
                 $postId = $_POST['post_id'];
                 $userId = $_SESSION['user_id'];
-                require_once dirname(__FILE__) . '../classes/PostHandler.php';
+                require_once dirname(__FILE__) . '/classes/PostHandler.php';
                 $postHandler = new PostHandler();
                 $post = $postHandler->getPost($postId);
                 if (!$post->ownerId === $userId)
@@ -48,11 +48,11 @@
                     <form class="ui form" action="src/editPost.php" method="post">
                         <div class="field">
                             <label>Title</label>
-                            <input name="Title" type="text" placeholder="Title" value="<?php echo $post->title; ?>"/>
+                            <input name="Title" type="text" placeholder="Title" value="<?php echo htmlentities($post->title); ?>" required="required" pattern=".{5,30}" title="Should be between 5 and 30 characters.">
                         </div>
                         <div class="field">
                             <label>Post content</label>
-                            <textarea name="Content" placeholder="Content" ><?php echo $post->content; ?></textarea>
+                            <textarea name="Content" placeholder="Content" required="required" minlength="5" maxlength="1600"><?php echo htmlentities($post->content); ?></textarea>
                         </div>
                         <input type="hidden" name="post_id" value="<?php echo $post->id ?>">
                         <button class="ui fluid primary button" type="submit">Submit changes</button>

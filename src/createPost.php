@@ -3,7 +3,7 @@
 session_start();
 if (!$_SESSION['authenticated'] === true)
 {
-    header('location:loginPage.php');
+    header('location:../loginPage.php');
 }
 else
 {

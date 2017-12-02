@@ -153,7 +153,7 @@
                     </a><br><a href="loginPage.php" style="font-size: 10px">Already have an account? Then click here!</a><br/><br/>
                     <div class="field">
                         <?php
-                        require_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
+                        require_once dirname(__FILE__) . '/securimage/securimage.php';
                         echo Securimage::getCaptchaHtml();
                         ?>
                     </div>

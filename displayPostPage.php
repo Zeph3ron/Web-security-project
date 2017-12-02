@@ -23,8 +23,8 @@
             }
             else
             {
-                require_once dirname(__FILE__) . '../classes/PostHandler.php';
-                require_once dirname(__FILE__) . '../classes/UserHandler.php';
+                require_once dirname(__FILE__) . '/classes/PostHandler.php';
+                require_once dirname(__FILE__) . '/classes/UserHandler.php';
                 $postId = $_GET['post_id'];
                 $postHandler = new PostHandler();
                 $userHandler = new UserHandler();
@@ -51,14 +51,14 @@
                             <div class="content">
                                 <img class="right floated mini ui image" src="resources/images/bill-small.png">
                                 <div class="header">
-                                    Created by <?php echo $postOwner->userName ?>
+                                    Created by <?php echo htmlentities($postOwner->userName)?>
                                 </div>
                                 <div class="description">
-                                    <?php echo $postOwner->userDescription ?>
+                                    <?php echo htmlentities($postOwner->userDescription)?>
                                 </div>
                                 <div class="meta">
                                     <br/>
-                                    This user has <?php echo $nrOfPosts ?> posts. 
+                                    This user has <?php echo htmlentities($nrOfPosts) ?> posts. 
                                 </div>
                             </div>
                         </div>
@@ -68,8 +68,8 @@
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header"><?php echo $post->title ?></h1>
-                        <p><?php echo $post->content ?>.</p>
+                        <h1 class="ui header"><?php echo htmlentities($post->title)?></h1>
+                        <p><?php echo htmlentities($post->content)?>.</p>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 session_start();
 if (!$_SESSION['authenticated'] === true)
 {
-    header('location:loginPage.php');
+    header('location:../loginPage.php');
 }
 else
 {
@@ -12,7 +12,6 @@ else
     if (!isset($_POST['post_id']))
     {
         echo 'Not Set';
-//        header('location:mainWallPage.php');
     }
     else
     {
@@ -26,7 +25,11 @@ else
         }
         else
         {
-            echo 'Nice try...trying to delete someone elses post, you should be ashamed.';
+		echo 'Nice try...trying to delete someone elses post, you should be ashamed.';
+		echo '<form action="../mainWallPage.php">'
+                . '<br/>'
+                . '<button class="ui fluid primary button"type="submit">Back to main post page</button>'
+                . '</form>';
         }
     }
 }

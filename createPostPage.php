@@ -29,11 +29,11 @@
                     <form class="ui form" action="src/createPost.php" method="post">
                         <div class="field">
                             <label>Title</label>
-                            <input name="Title" type="text" placeholder="Title"/>
+                            <input name="Title" type="text" placeholder="Title" pattern=".{5,30}" required="required" title="Should be between 5 and 30 characters."/>
                         </div>
                         <div class="field">
                             <label>Post content</label>
-                            <textarea name="Content" placeholder="Content"></textarea>
+                            <textarea name="Content" placeholder="Content" required="required" minlength="5" maxlength="1600"></textarea>
                         </div>
                         <button class="ui fluid primary button" type="submit">Submit</button>
                     </form>

@@ -4,7 +4,7 @@ define('DATABASE_SERVER', "localhost");
 define('DATABASE_USERNAME', "root");
 define('DATABASE_PASSWORD', "123");
 
-define('DATABASE_NAME', "securityDb");
-define('DATABASE_SHOW_EXCEPTIONS', true);
+define('DATABASE_NAME', "securityDb2");
+define('DATABASE_SHOW_EXCEPTIONS', false);
 ?>
 

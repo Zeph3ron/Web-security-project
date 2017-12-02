@@ -16,8 +16,8 @@
         }
         else
         {
-            require_once dirname(__FILE__) . '../classes/PostHandler.php';
-            require_once dirname(__FILE__) . '../classes/UserHandler.php';
+            require_once dirname(__FILE__) . '/classes/PostHandler.php';
+            require_once dirname(__FILE__) . '/classes/UserHandler.php';
             $userHandler = new UserHandler();
             $postHandler = new PostHandler();
 
@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header">Hello there <?php echo $user->userName ?>! </h1>
+                        <h1 class="ui header">Hello there <?php echo htmlentities($user->userName) ?>! </h1>
                         <p>This is your landing page. Here you can get an overview of all post created by you and other users.</p>
                     </div>
                 </div>

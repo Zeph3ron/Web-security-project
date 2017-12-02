@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '../DatabaseHandler.php';
+require_once dirname(__FILE__) . '/DatabaseHandler.php';
 require_once dirname(__FILE__) . '../../models/Post.php';
 require_once dirname(__FILE__) . '../../config.php';
 
@@ -74,7 +74,7 @@ class PostHandler {
         return '<div class="item">'
                 . '<img class="ui avatar image" src="resources/images/bill-small.png">'
                 . '<div class="content">'
-                . '<a class="header" href="displayPostPage.php?post_id=' . $post->id . '">' . $post->title . '</a><font size="1">Created on '.date_format($post -> postDate, 'd/m/Y H:i').'</font>'
+                . '<a class="header" href="displayPostPage.php?post_id=' . htmlentities($post->id) . '">' . htmlentities($post->title) . '</a><font size="1">Created on '.htmlentities(date_format($post -> postDate, 'd/m/Y H:i')).'</font>'
                 . '</div>'
                 . '</div>';
     } 

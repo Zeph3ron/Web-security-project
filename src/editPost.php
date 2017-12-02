@@ -3,7 +3,7 @@
 session_start();
 if (!$_SESSION['authenticated'] === true)
 {
-    header('location:loginPage.php');
+    header('location:../loginPage.php');
 }
 else
 {
@@ -12,7 +12,7 @@ else
     $userId = $_SESSION['user_id'];
     if (!isset($_POST['post_id']))
     {
-        header('location:mainWallPage.php');
+        header('location:../mainWallPage.php');
     }
     else
     {
@@ -50,7 +50,7 @@ else
             }
             else
             {
-                echo 'Nice try...';
+                echo 'Nice try... its not nice to mess with posts that dont belong to you..';
                 echo '<form action="../editPostPage.php" method="post">'
                 . '<br/>'
                 . '<input type="hidden" name="post_id" value="' . $postId . '"/>'

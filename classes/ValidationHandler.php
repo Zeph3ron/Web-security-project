@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '../UserHandler.php';
+require_once dirname(__FILE__) . '/UserHandler.php';
 
 /**
  * Description of ValidationHandler
@@ -85,7 +85,7 @@ class ValidationHandler {
 
     function validateCaptcha($captchaCode, &$errors)
     {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
+        require_once dirname(__FILE__) . '/../securimage/securimage.php';
         $image = new Securimage();
         if ($image->check($captchaCode) != true)
         {
@@ -140,9 +140,9 @@ class ValidationHandler {
             }
             else
             {
-                if (strlen($content)< 5 ||strlen($content) > 200)
+                if (strlen($content)< 5 ||strlen($content) > 1600)
                 {
-                    array_push($errors, "The length of the post must be between 5 and 200 characters.");
+                    array_push($errors, "The length of the post must be between 5 and 1600 characters.");
                 }
             }
         }
