@@ -196,4 +196,36 @@ class ValidationHandler {
         }
     }
 
+    function validateImage($image, $targetImage, $imageFileType, &$errors)
+    {
+        //Higly inspired by the code from this link: https://www.w3schools.com/php/php_file_upload.asp
+        if (isset($image) && $image != '')
+        {
+            $check = getimagesize($image);
+            if ($check === false)
+            {
+                array_push($errors, "The file was not an image.");
+                return;
+            }
+        }
+        else
+        {
+            array_push($errors, "No image file was selected.");
+            return;
+        }
+
+        if (file_exists($targetImage))
+        {
+            array_push($errors, "This image file already exists.");
+        }
+        if ($_FILES["fileToUpload"]["size"] > 500000)
+        {
+            array_push($errors, "Sorry, your image is too large.");
+        }
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif")
+        {
+            array_push($errors, "Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+        }
+    }
+
 }

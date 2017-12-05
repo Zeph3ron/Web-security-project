@@ -100,7 +100,7 @@ class UserHandler {
     function userExists($username)
     {
         $dbHandler = $this->getDbHandler();
-        $users = $dbHandler->getRecords("User", "Username", $username, PDO::PARAM_STR);
+        $users = $dbHandler->getRecords("User", "Username" ,$username, PDO::PARAM_STR);
         if (count($users) > 0)
         {
             return true;
@@ -111,7 +111,6 @@ class UserHandler {
     function displayNameExists($displayName, $userId)
     {
         $dbHandler = $this->getDbHandler();
-        
         $users = $dbHandler->getRecords("User", "Display_name", $displayName, PDO::PARAM_STR);
         if (count($users) > 0 && $users[0][0] != $userId)
         {
@@ -136,7 +135,9 @@ class UserHandler {
             //NOTE: Adding/editing/removing columns in the database might affect the indexes.
             $dbUserValues = $users[0];
             $user = new User(
-                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], $dbUserValues[8]);
+                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], 
+                    $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], 
+                    $dbUserValues[8], $dbUserValues[9], $dbUserValues[10],$dbUserValues[11]);
             return true;
         }
         return false;
@@ -148,16 +149,18 @@ class UserHandler {
      * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
      * @return boolean Returns true if the user existed, else false.
      */
-    function getUserById($user_id, &$user)
+    function getUserById($userId, &$user)
     {
         $dbHandler = $this->getDbHandler();
-        $users = $dbHandler->getRecords("User", "Id", $user_id, PDO::PARAM_INT);
+        $users = $dbHandler->getRecords("User", "Id", $userId, PDO::PARAM_INT);
         if (count($users) > 0)
         {
             //NOTE: Adding/editing/removing columns in the database might affect the indexes.
             $dbUserValues = $users[0];
             $user = new User(
-                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], $dbUserValues[8]);
+                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], 
+                    $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], 
+                    $dbUserValues[8], $dbUserValues[9], $dbUserValues[10],$dbUserValues[11]);
             return true;
         }
         return false;
@@ -168,6 +171,31 @@ class UserHandler {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Display_name", $newDisplayName, "Id", $userId, PDO::PARAM_STR);
         $dbHandler->updateRecord("User", "User_description", $newDescription, "Id", $userId, PDO::PARAM_STR);
+    }
+    
+     function updateUserProfileImage($userId, $newImagePath)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->updateRecord("User", "Profile_image_path", $newImagePath, "Id", $userId, PDO::PARAM_STR);
+    }
+    
+    function isAdmin($userId)
+    {
+        $user = null;
+        if ($this->getUserById($userId, $user))
+        {
+            if ($user -> displayName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function banUser($userId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->updateRecord("User", "Is_banned", true, "Id", $userId, PDO::PARAM_BOOL);
     }
 
     /**

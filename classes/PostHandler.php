@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/DatabaseHandler.php';
+require_once dirname(__FILE__) . '/UserHandler.php';
 require_once dirname(__FILE__) . '../../models/Post.php';
 require_once dirname(__FILE__) . '../../config.php';
 
@@ -14,10 +15,15 @@ class PostHandler {
     {
         $posts = [];
         $dbHandler = $this->getDbHandler();
+        $userHandler = new UserHandler();
         $records = $dbHandler->getAllRecords("Post");
         for ($i = 0; $i < count($records); $i++)
         {
-            array_push($posts, new Post($records[$i][0], $records[$i][1], $records[$i][2], $records[$i][3], $records[$i][4], $records[$i][5]));
+            $postOwner = null;
+            $userHandler ->getUserById($records[$i][1], $postOwner);
+            $nrOfVotes = $this->getVotesForPost($records[$i][0]);
+            $profileImagePath = $postOwner -> profileImagePath;
+            array_push($posts, new Post($records[$i][0], $records[$i][1], $records[$i][2], $records[$i][3], $nrOfVotes, $records[$i][4], $profileImagePath));
         }
         return $posts;
     }
@@ -55,13 +61,13 @@ class PostHandler {
         $dbHandler = $this->getDbHandler();
         $dbHandler->addRecord("Post", ["Owner_id", "Title", "Post_date", "Content"], [$ownerId, $title, date("Y-m-d H:i:s"), $content], [PDO::PARAM_INT, PDO::PARAM_STR, PDO::PARAM_STR, PDO::PARAM_STR]);
     }
-    
+
     function deletePost($postId)
     {
         $dbHandler = $this->getDbHandler();
-        $dbHandler ->deleteRecord("Post", "id", $postId, PDO::PARAM_INT);
+        $dbHandler->deleteRecord("Post", "id", $postId, PDO::PARAM_INT);
     }
-    
+
     function updatePost($postId, $title, $content)
     {
         $dbHandler = $this->getDbHandler();
@@ -69,15 +75,57 @@ class PostHandler {
         $dbHandler->updateRecord("Post", "Content", $content, "Id", $postId, PDO::PARAM_STR);
     }
 
+    function voteOnPost($userId, $postId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $dbHandler->addRecord("Vote", ["Owner_id", "Post_id", "Vote_date"], [$userId, $postId, date("Y-m-d H:i:s")], [PDO::PARAM_INT, PDO::PARAM_INT, PDO::PARAM_STR]);
+    }
+
+    function getVotesForPost($postId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $records = $dbHandler->getRecords("Vote", "Post_id", $postId, PDO::PARAM_INT);
+        return count($records);
+    }
+
+    function getVotesFromUser($userId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $records = $dbHandler->getRecords("Vote", "Owner_id", $userId, PDO::PARAM_INT);
+        return count($records);
+    }
+
+    function canVote($userId)
+    {
+        $dbHandler = $this->getDbHandler();
+        $records = $dbHandler->getRecords("Vote", "Owner_id", $userId, PDO::PARAM_INT);       
+        $votesToday = 0;
+        $dateNow = new DateTime();
+        for($i = 0;$i < count($records); $i++)
+        {
+            $voteDate = new DateTime($records[$i][3]);
+            if ($voteDate ->format("Y-m-d") === $dateNow ->format("Y-m-d"))
+            {
+                $votesToday++;
+            }
+        }
+        if ($votesToday >= 5)
+        {
+            return false;
+        }
+        return true;
+    }
+
     function getPostHtml($post)
     {
         return '<div class="item">'
-                . '<img class="ui avatar image" src="resources/images/bill-small.png">'
+                . '<img class="ui avatar image" src="src/getProfileImage.php?image='.htmlentities($post -> profileImagePath).'">'
                 . '<div class="content">'
-                . '<a class="header" href="displayPostPage.php?post_id=' . htmlentities($post->id) . '">' . htmlentities($post->title) . '</a><font size="1">Created on '.htmlentities(date_format($post -> postDate, 'd/m/Y H:i')).'</font>'
+                . '<a class="header" href="displayPostPage.php?post_id=' . htmlentities($post->id) . '">' . htmlentities($post->title) . '</a><font size="1">Created on ' . htmlentities(date_format($post->postDate, 'd/m/Y H:i')) . '</font>'
                 . '</div>'
+                .'<font size="1" style="float:right"> Up Votes: '.$post ->nrOfVotes.'</font>'
                 . '</div>';
-    } 
+    }
 
     private function getDbHandler()
     {

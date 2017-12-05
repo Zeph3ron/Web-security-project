@@ -24,6 +24,12 @@
             $user_id = $_SESSION['user_id'];
             $userHandler->getUserById($user_id, $user);
             $posts = $postHandler->getAllPosts();
+            usort($posts, "cmp");
+        }
+
+        function cmp($postA, $postB)
+        {
+            return $postB->nrOfVotes - $postA->nrOfVotes;
         }
         ?>
         <br/>
@@ -31,8 +37,19 @@
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header">Hello there <?php echo htmlentities($user->userName) ?>! </h1>
-                        <p>This is your landing page. Here you can get an overview of all post created by you and other users.</p>
+                        <h1 class="ui header">Hello there <?php echo htmlentities($user->userName) ?>!</h1>
+                        <p>
+                            <?php
+                            if ($user->isAdmin)
+                            {
+                                echo'You are logged in as an administrator. You have the ability to delete inappropriate posts, chose wisely.';
+                            }
+                            else
+                            {
+                                echo'This is your landing page. Here you can get an overview of all post created by you and other users.';
+                            }
+                            ?>
+                        </p>
                     </div>
                 </div>
             </div>

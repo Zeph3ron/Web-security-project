@@ -14,7 +14,7 @@ class Post {
     var $nrOfVotes;
     var $content;
 
-    public function __construct($id, $ownerId, $title, $postDate, $nrOfVotes, $content)
+    public function __construct($id, $ownerId, $title, $postDate, $nrOfVotes, $content, $profileImagePath)
     {
         $this->id = $id;
         $this->ownerId = $ownerId;
@@ -22,6 +22,7 @@ class Post {
         $this->postDate = new DateTime($postDate);
         $this->nrOfVotes = $nrOfVotes;
         $this->content = $content;
+        $this->profileImagePath = $profileImagePath;
     }
 
 }

@@ -37,7 +37,9 @@
                 else
                 {
                     $userHandler->getUserById($post->ownerId, $postOwner);
+                    $userHandler->getUserById($userId, $loggedInUser);
                     $nrOfPosts = $postHandler->getNrOfPosts($postOwner->id);
+                    $nrOfVotes = $postHandler->getVotesForPost($postId);
                 }
             }
         }
@@ -49,17 +51,22 @@
                     <div class="ui cards">
                         <div class="card">
                             <div class="content">
-                                <img class="right floated mini ui image" src="resources/images/bill-small.png">
+                                <img class="right floated mini ui image" src="src/getProfileImage.php?image=<?php echo $post->profileImagePath;?>">
                                 <div class="header">
                                     Created by 
                                     <?php
+                                    $adminConcat = "";
+                                    if ($postOwner->isAdmin)
+                                    {
+                                        $adminConcat .= " (admin)";
+                                    }
                                     if (strlen(trim($postOwner->displayName)) == 0)
                                     {
-                                        echo htmlentities($postOwner->userName);
+                                        echo htmlentities($postOwner->userName) . $adminConcat;
                                     }
                                     else
                                     {
-                                        echo htmlentities($postOwner->displayName);
+                                        echo htmlentities($postOwner->displayName) . $adminConcat;
                                     }
                                     ?>
                                 </div>
@@ -68,7 +75,7 @@
                                 </div>
                                 <div class="meta">
                                     <br/>
-                                    This user has <?php echo htmlentities($nrOfPosts) ?> posts. 
+                                    This user has <?php echo htmlentities($nrOfPosts) ?> posts.
                                 </div>
                             </div>
                         </div>
@@ -80,17 +87,29 @@
                     <div class="ui message main">
                         <h1 class="ui header"><?php echo htmlentities($post->title) ?></h1>
                         <p><?php echo htmlentities($post->content) ?>.</p>
+                        <?php echo '<br/><i>This post has received ' . $nrOfVotes . ' votes.</i>' ?>
                     </div>
                 </div>
             </div>
             <?php
-            if ($userId == $postOwner->id)
+            if ($loggedInUser->id == $postOwner->id)
             {
                 echo '<div><form action="editPostPage.php" method="post">'
                 . '<br/>'
                 . '<input type="hidden" value="' . $post->id . '" name="post_id" />'
                 . '<button class="ui fluid primary button"type="submit">Edit post</button>'
                 . '</form></div>';
+            }
+            else
+            {
+                echo '<div><form action="src/votePost.php" method="post">'
+                . '<br/>'
+                . '<input type="hidden" value="' . $post->id . '" name="post_id" />'
+                . '<button class="positive ui button"><i class="thumbs up outline icon"></i>Cast vote!</button>'
+                . '</form></div>';
+            }
+            if ($loggedInUser->id == $postOwner->id || $loggedInUser->isAdmin)
+            {
                 echo '<div><form action="src/deletePost.php" method="post">'
                 . '<br/>'
                 . '<input type="hidden" value="' . $post->id . '" name="post_id" />'
@@ -100,7 +119,7 @@
             ?>
             <div>
                 <br/>
-                <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';" >Back to posts</button>
+                <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';">Back to posts</button>
             </div>
         </main>
     </body>

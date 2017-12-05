@@ -31,8 +31,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="column">
+            <div                  class        ="row">
+                <div             class="column">
                     <form class="ui form" action="src/editProfile.php" method="post">
                         <div class="field">
                             <label>Username</label>
@@ -48,6 +48,10 @@
                         </div>
                         <button class="ui fluid primary button" type="submit">Submit changes</button>
                     </form>
+                    <div>
+                        <br/>
+                        <button class="ui fluid primary button"type="submit" onclick="window.location = 'uploadImagePage.php';">Upload a profile image</button>
+                    </div>
                     <div>
                         <br/>
                         <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';">Back to posts</button>

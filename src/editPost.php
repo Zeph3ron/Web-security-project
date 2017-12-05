@@ -46,7 +46,7 @@ else
             if ($post->ownerId === $userId)
             {
                 $postHandler->updatePost($postId, $title, $content);
-                header('location: ../mainWallPage.php');
+                header('location: ../displayPostPage.php?post_id='.$post->id);
             }
             else
             {
