@@ -34,7 +34,7 @@ class UserHandler {
         $user = null;
         //If 'userExistsComplex' returns true, the '$user' variable
         //will contain the user information from the database.
-        if ($this->getUserByName($username, $user))
+        if ($this->getUserByUsername($username, $user))
         {
             //If 'lastFailedLogin' is not set, we skip checking for failed attempts.
             if (isset($user->lastFailedLogin))
@@ -42,20 +42,17 @@ class UserHandler {
                 $lastFailedModified = new DateTime($user->lastFailedLogin);
                 $lastFailedModified->modify('+3 minutes');
                 $dateNow = new DateTime();
+                //Here we check if a failed attempt has happened within the last 3 minutes
+                if ($dateNow > $lastFailedModified)
+                {
+                    //If not, we reset the failed attempts
+                    $this->resetFailedLogins($username, $user);
+                }
                 if ($user->failedLoginAttempts >= 5)
                 {
-                    //Here we check if a failed attempt has happened within the last 3 minutes
-                    if ($dateNow > $lastFailedModified)
-                    {
-                        //If not, we reset the failed attempts
-                        $this->resetFailedLogins($username);
-                    }
-                    else
-                    {
-                        //If it reaches here there have been 5 or more failed attampets within the last 3 minutes
-                        array_push($errors, "You have exceeded your login attempts, try again in 3 minutes.");
-                        return;
-                    }
+                    //If it reaches here there have been 5 or more failed attampets within the last 3 minutes
+                    array_push($errors, "You have exceeded your login attempts, try again in 3 minutes.");
+                    return;
                 }
             }
             //If it reaches here we proceed to login normally
@@ -66,7 +63,7 @@ class UserHandler {
             else
             {
                 session_start();
-                $_SESSION['user_id'] = $user-> id;
+                $_SESSION['user_id'] = $user->id;
             }
         }
         else
@@ -100,14 +97,14 @@ class UserHandler {
     function userExists($username)
     {
         $dbHandler = $this->getDbHandler();
-        $users = $dbHandler->getRecords("User", "Username" ,$username, PDO::PARAM_STR);
+        $users = $dbHandler->getRecords("User", "Username", $username, PDO::PARAM_STR);
         if (count($users) > 0)
         {
             return true;
         }
         return false;
     }
-    
+
     function displayNameExists($displayName, $userId)
     {
         $dbHandler = $this->getDbHandler();
@@ -126,7 +123,7 @@ class UserHandler {
      * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
      * @return boolean Returns true if the user existed, else false.
      */
-    function getUserByName($username, &$user)
+    function getUserByUsername($username, &$user)
     {
         $dbHandler = $this->getDbHandler();
         $users = $dbHandler->getRecords("User", "Username", $username, PDO::PARAM_STR);
@@ -134,10 +131,14 @@ class UserHandler {
         {
             //NOTE: Adding/editing/removing columns in the database might affect the indexes.
             $dbUserValues = $users[0];
+            $nameToShow = $dbUserValues[2];
+            if (empty((trim($nameToShow))))
+            {
+                //If display name is empty we will display username.
+                $nameToShow = $dbUserValues[1];
+            }
             $user = new User(
-                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], 
-                    $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], 
-                    $dbUserValues[8], $dbUserValues[9], $dbUserValues[10],$dbUserValues[11]);
+                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], $dbUserValues[8], $dbUserValues[9], $dbUserValues[10], $dbUserValues[11], $nameToShow);
             return true;
         }
         return false;
@@ -157,41 +158,45 @@ class UserHandler {
         {
             //NOTE: Adding/editing/removing columns in the database might affect the indexes.
             $dbUserValues = $users[0];
+            $nameToShow = $dbUserValues[2];
+            if (empty((trim($nameToShow))))
+            {
+                //If display name is empty we will display username.
+                $nameToShow = $dbUserValues[1];
+            }
             $user = new User(
-                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], 
-                    $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], 
-                    $dbUserValues[8], $dbUserValues[9], $dbUserValues[10],$dbUserValues[11]);
+                    $dbUserValues[0], $dbUserValues[1], $dbUserValues[2], $dbUserValues[3], $dbUserValues[4], $dbUserValues[5], $dbUserValues[6], $dbUserValues[7], $dbUserValues[8], $dbUserValues[9], $dbUserValues[10], $dbUserValues[11], $nameToShow);
             return true;
         }
         return false;
     }
-    
+
     function updateUserProfile($userId, $newDisplayName, $newDescription)
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Display_name", $newDisplayName, "Id", $userId, PDO::PARAM_STR);
         $dbHandler->updateRecord("User", "User_description", $newDescription, "Id", $userId, PDO::PARAM_STR);
     }
-    
-     function updateUserProfileImage($userId, $newImagePath)
+
+    function updateUserProfileImage($userId, $newImagePath)
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Profile_image_path", $newImagePath, "Id", $userId, PDO::PARAM_STR);
     }
-    
+
     function isAdmin($userId)
     {
         $user = null;
         if ($this->getUserById($userId, $user))
         {
-            if ($user -> displayName)
+            if ($user->displayName)
             {
                 return true;
             }
         }
         return false;
     }
-    
+
     function banUser($userId)
     {
         $dbHandler = $this->getDbHandler();
@@ -215,11 +220,12 @@ class UserHandler {
      * @param type $dbHandler The database handler instance to use.
      * @param type $username The user's username.
      */
-    private function resetFailedLogins($username)
+    private function resetFailedLogins($username, &$user)
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Failed_login_attempts", 0, "Username", $username, PDO::PARAM_INT);
-    }   
+        $user -> failedLoginAttempts = 0;
+    }
 
     /**
      * Creates an instance of the database handler using information defined in the 'config.php' file.

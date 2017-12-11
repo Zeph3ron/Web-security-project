@@ -109,7 +109,7 @@
                 var re = /^(?=.*[A-Z])(?=.*[!"#$%&/()=?])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
                 if (re.test(password.value)) {
                 } else {
-                    return confirm('The password you have did not pass our security check, Are you sure you want to use this password?');
+                    return confirm('The password you have chosen did not pass our security check, Are you sure you want to use this password?');
                 }
             }
             function validateUsername() {

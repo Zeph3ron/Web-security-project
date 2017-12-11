@@ -35,8 +35,16 @@ else
     }
     else
     {
-        session_start();
-        $_SESSION['authenticated'] = true;
-        header('location:../mainWallPage.php');
+        $userId = $_SESSION['user_id'];
+        $userHandler->getUserById($userId, $user);
+        if ($user->isBanned)
+        {
+            echo 'Your account has been banned because of inappropriate behaviour. If you want to protest this action, please send an email to our support: don@counton.it';
+        }
+        else
+        {
+            $_SESSION['authenticated'] = true;
+            header('location:../mainWallPage.php');
+        }
     }
 }

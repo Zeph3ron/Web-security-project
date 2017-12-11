@@ -216,7 +216,7 @@ class ValidationHandler {
 
         if (file_exists($targetImage))
         {
-            array_push($errors, "This image file already exists.");
+            array_push($errors, "A image with that randomly generated name already exists, its against all odds! just try again and it will work.");
         }
         if ($_FILES["fileToUpload"]["size"] > 500000)
         {
@@ -228,4 +228,41 @@ class ValidationHandler {
         }
     }
 
+    function validateComment($content, &$errors)
+    {
+        if (isset($content) && is_string($content))
+        {
+            if (strlen($content) > 200)
+            {
+                array_push($errors, "The length of the comment cannot exceed 200 characters.");
+            }
+        }
+        else
+        {
+            array_push($errors, "The comment field must have some content.");
+        }
+    }
+
+    function validateToken($token, &$valErrors)
+    {
+        if (!empty($token))
+        {
+            if (!hash_equals($_SESSION['token'], $token))
+            {
+                array_push($valErrors, "The validation token was wrong.");
+            }
+        }
+        else
+        {
+            //Regenerates the token if the validaiton succeded, so that it can only be used once
+            if (function_exists('mcrypt_create_iv'))
+            {
+                $_SESSION['token'] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+            }
+            else
+            {
+                $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
+            }
+        }
+    }
 }

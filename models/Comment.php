@@ -6,5 +6,22 @@
  * @author User
  */
 class Comment {
-    //put your code here
+    var $id;
+    var $ownerId;
+    var $postId;
+    var $commentDate;
+    var $content;
+    var $profileImagePath;
+    var $ownerName;
+
+    public function __construct($id, $ownerId, $postId, $commentDate, $content, $profileImagePath, $ownerName)
+    {
+        $this->id = $id;
+        $this->ownerId = $ownerId;
+        $this->postId = $postId;
+        $this->commentDate = new DateTime($commentDate);
+        $this->content = htmlentities($content);
+        $this->profileImagePath = $profileImagePath;
+        $this->ownerName = $ownerName;
+    }
 }

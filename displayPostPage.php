@@ -38,11 +38,22 @@
                 {
                     $userHandler->getUserById($post->ownerId, $postOwner);
                     $userHandler->getUserById($userId, $loggedInUser);
+
                     $nrOfPosts = $postHandler->getNrOfPosts($postOwner->id);
                     $nrOfVotes = $postHandler->getVotesForPost($postId);
+                    $comments = $postHandler->getCommentsForPost($postId);
                 }
             }
         }
+        if (function_exists('mcrypt_create_iv'))
+        {
+            $_SESSION['token'] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+        }
+        else
+        {
+            $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
+        }
+        $token = $_SESSION['token'];
         ?>
         <br/>
         <main class="ui page grid container">
@@ -51,7 +62,7 @@
                     <div class="ui cards">
                         <div class="card">
                             <div class="content">
-                                <img class="right floated mini ui image" src="src/getProfileImage.php?image=<?php echo $post->profileImagePath;?>">
+                                <img class="right floated mini ui image" src="src/getProfileImage.php?image=<?php echo $post->profileImagePath; ?>">
                                 <div class="header">
                                     Created by 
                                     <?php
@@ -60,22 +71,25 @@
                                     {
                                         $adminConcat .= " (admin)";
                                     }
-                                    if (strlen(trim($postOwner->displayName)) == 0)
-                                    {
-                                        echo htmlentities($postOwner->userName) . $adminConcat;
-                                    }
-                                    else
-                                    {
-                                        echo htmlentities($postOwner->displayName) . $adminConcat;
-                                    }
+                                    echo $postOwner->nameToShow . $adminConcat;
                                     ?>
                                 </div>
                                 <div class="description">
-                                    <?php echo htmlentities($postOwner->userDescription) ?>
+                                    <?php echo $postOwner->userDescription?>
                                 </div>
                                 <div class="meta">
                                     <br/>
-                                    This user has <?php echo htmlentities($nrOfPosts) ?> posts.
+                                    This user has <?php echo $nrOfPosts ?> posts.
+                                    <?php
+                                    if ($loggedInUser->isAdmin)
+                                    {
+                                        echo '<br/><br/>'
+                                        . '<form action="src/banUser.php" method="post">'
+                                        . '<input type="hidden" value="' . $post->id . '" name="post_id" />'
+                                        . '<button class="ui fluid negative ui button"type="submit">Ban user</button>'
+                                        . '</form>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -85,8 +99,8 @@
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header"><?php echo htmlentities($post->title) ?></h1>
-                        <p><?php echo htmlentities($post->content) ?>.</p>
+                        <h1 class="ui header"><?php echo $post->title ?></h1>
+                        <p><?php echo $post->content ?>.</p>
                         <?php echo '<br/><i>This post has received ' . $nrOfVotes . ' votes.</i>' ?>
                     </div>
                 </div>
@@ -120,6 +134,30 @@
             <div>
                 <br/>
                 <button class="ui fluid primary button"type="submit" onclick="window.location = 'mainWallPage.php';">Back to posts</button>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <br/>
+                    <div class="ui comments">
+                        <h3 class="ui dividing header">Comments</h3>
+                        <?php
+                        for ($i = 0; $i < count($comments); $i++)
+                        {
+                            echo $postHandler->getCommentHtml($comments[$i]);
+                        }
+                        ?>
+                    </div>
+                    <form class="ui reply form" action="src/createComment.php" method="post">
+                        <input type="hidden" value="<?php echo $post->id ?>" name="post_id" />
+                        <input type="hidden" name="token" value="<?php echo $token ?>"/>
+                        <div class="field">
+                            <textarea name="content" maxlength="200" required="required"></textarea>
+                        </div>
+                        <button class="ui blue labeled submit icon button">
+                            <i class="icon edit"></i> Add Comment
+                        </button>
+                    </form>
+                </div>
             </div>
         </main>
     </body>

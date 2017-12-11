@@ -14,6 +14,15 @@
         {
             header('location:loginPage.php');
         }
+        if (function_exists('mcrypt_create_iv'))
+        {
+            $_SESSION['token'] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+        }
+        else
+        {
+            $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
+        }
+        $token = $_SESSION['token'];
         ?>
         <br/>
         <main class="ui page grid container">
@@ -36,6 +45,7 @@
                             <textarea name="Content" placeholder="Content" required="required" minlength="5" maxlength="1600"></textarea>
                         </div>
                         <button class="ui fluid primary button" type="submit">Submit</button>
+                        <input type="hidden" name="token" value="<?php echo $token ?>"/>
                     </form>
                     <div>
                         <br/>

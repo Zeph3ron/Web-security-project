@@ -40,7 +40,7 @@ $commentColumns = [
     "PRIMARY KEY (`Id`)",
     "KEY `FK_Comment_User_Id` (`Owner_id`)",
     "KEY `FK_Comment_Post_Id` (`Post_id`)",
-    "CONSTRAINT `FK_Comment_Post_Id` FOREIGN KEY (`Post_id`) REFERENCES `Post` (`Id`)",
+    "CONSTRAINT `FK_Comment_Post_Id` FOREIGN KEY (`Post_id`) REFERENCES `Post` (`Id`) ON DELETE CASCADE",
     "CONSTRAINT `FK_Comment_User_Id` FOREIGN KEY (`Owner_id`) REFERENCES `User` (`Id`)"];
 
 $voteColumns = [

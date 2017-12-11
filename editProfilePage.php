@@ -31,20 +31,20 @@
                     </div>
                 </div>
             </div>
-            <div                  class        ="row">
-                <div             class="column">
+            <div class="row">
+                <div class="column">
                     <form class="ui form" action="src/editProfile.php" method="post">
                         <div class="field">
                             <label>Username</label>
-                            <p><?php echo $user->userName; ?></p>
+                            <p><?php echo $user->userName;?></p>
                         </div>
                         <div class="field">
                             <label>Display name - (Optional)</label>
-                            <input name="Display_name" type="text" placeholder="Display name" value="<?php echo htmlentities($user->displayName); ?>" pattern=".{5,30}" maxlength="30" title="Should be between 5 and 30 characters.">
+                            <input name="Display_name" type="text" placeholder="Display name" value="<?php echo $user->displayName; ?>" pattern=".{5,30}" maxlength="30" title="Should be between 5 and 30 characters.">
                         </div>
                         <div class="field">
                             <label>Description</label>
-                            <textarea name="User_description" placeholder="Write a short description of yourself" minlength="10" maxlength="200"><?php echo htmlentities($user->userDescription); ?></textarea>
+                            <textarea name="User_description" placeholder="Write a short description of yourself" minlength="10" maxlength="200"><?php echo $user->userDescription; ?></textarea>
                         </div>
                         <button class="ui fluid primary button" type="submit">Submit changes</button>
                     </form>

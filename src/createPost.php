@@ -18,6 +18,7 @@ else
     $valHandler = new ValidationHandler();
     $valHandler->validatePostTitle($title, $valErrors);
     $valHandler->validatePostContent($content, $valErrors);
+    $valHandler->validateToken($_POST['token'], $valErrors);
 
     if (count($valErrors) > 0)
     {

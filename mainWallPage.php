@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="column">
                     <div class="ui message main">
-                        <h1 class="ui header">Hello there <?php echo htmlentities($user->userName) ?>!</h1>
+                        <h1 class="ui header">Hello there <?php echo $user->nameToShow ?>!</h1>
                         <p>
                             <?php
                             if ($user->isAdmin)

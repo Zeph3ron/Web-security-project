@@ -19,21 +19,22 @@ class User {
     var $isAdmin;
     var $isBanned;
     var $profileImagePath;
+    var $nameToShow;
 
-    public function __construct($id, $userName, $displayName, $email, $sex, $userDescription, $passwordHash, $failedLoginAttempts, $lastFailedLogin, $isAdmin, $isBanned, $profileImagePath)
+    public function __construct($id, $userName, $displayName, $email, $sex, $userDescription, $passwordHash, $failedLoginAttempts, $lastFailedLogin, $isAdmin, $isBanned, $profileImagePath, $nameToShow)
     {
         $this->id = $id;
-        $this->userName = $userName;
-        $this->displayName = $displayName;
-        $this->email = $email;
+        $this->userName = htmlentities($userName);
+        $this->displayName = htmlentities($displayName);
+        $this->email = htmlentities($email);
         $this->sex = $sex;
-        $this->userDescription = $userDescription;
+        $this->userDescription = htmlentities($userDescription);
         $this->passwordHash = $passwordHash;
         $this->failedLoginAttempts = $failedLoginAttempts;
         $this->lastFailedLogin = $lastFailedLogin;
         $this->isAdmin = $isAdmin;
         $this->isBanned = $isBanned;
         $this->profileImagePath = $profileImagePath;
+        $this->nameToShow = htmlentities($nameToShow);
     }
-
 }

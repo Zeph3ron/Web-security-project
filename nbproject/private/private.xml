@@ -5,23 +5,37 @@
             <url>classes/PostHandler.php</url>
             <bookmark id="1">
                 <name/>
-                <line>115</line>
+                <line>149</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/DatabaseHandler.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/createPostPage.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/mainWallPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/Comment.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/PostHandler.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/votePost.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/displayPostPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/editProfilePage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/uploadImage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/Post.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/uploadImagePage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/banUser.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/DatabaseHandler.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/loginAccount.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/config.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/src/registerAccount.php</file>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/votePost.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/editPost.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/createComment.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/editProfile.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/createPost.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/src/create_db.php</file>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/models/Post.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/ValidationHandler.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/models/User.php</file>
-            <file>file:/D:/xampp/htdocs/SecurityPostBank/displayPostPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/editPostPage.php</file>
+            <file>file:/D:/xampp/htdocs/SecurityPostBank/src/getProfileImage.php</file>
             <file>file:/D:/xampp/htdocs/SecurityPostBank/classes/UserHandler.php</file>
         </group>
     </open-files>
