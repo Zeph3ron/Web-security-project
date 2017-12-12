@@ -151,6 +151,7 @@ class DatabaseHandler {
      * @param type $newValue The new updated value.
      * @param type $conditionalColumn The column to use in the WHERE clause.
      * @param type $condition The condition to compare against.
+     * @param type $pdoBindParameter The PDO bind parameter. Example "PDO::PARAM_STR"
      * @return type
      */
     function updateRecord($tableName, $columnToUpdate, $newValue, $conditionalColumn, $condition, $pdoBindParameter)
@@ -175,10 +176,16 @@ class DatabaseHandler {
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
-
+    
+    /**
+     * Deletes a record from the database.
+     * @param type $tableName The name of the table.
+     * @param type $conditionalColumn The column to use in the WHERE clause.
+     * @param type $condition The condition to compare against.
+     * @param type $pdoBindParameter The PDO bind parameter. Example "PDO::PARAM_STR"
+     */
     function deleteRecord($tableName, $conditionalColumn, $condition, $pdoBindParameter)
     {
-        $test = "DELETE FROM Post WHERE id = 1";
         $sql = "DELETE FROM $tableName WHERE $conditionalColumn = :condition";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(":condition", $condition, $pdoBindParameter);

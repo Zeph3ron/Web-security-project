@@ -7,7 +7,11 @@ require_once dirname(__FILE__) . '/UserHandler.php';
  * Handles all validation operations, like validating username, passwords, email, etc.
  */
 class ValidationHandler {
-
+    /**
+     * Validates the username according to our defined validation rules.
+     * @param type $username The username to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateUsername($username, &$errors)
     {
         if (isset($username))
@@ -38,6 +42,11 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates that the provided email is in the correct format.
+     * @param type $email The email to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateEmail($email, &$errors)
     {
         if (isset($email))
@@ -60,6 +69,12 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates that the two provided passwords are the same. Used for password confirmation.
+     * @param type $password1
+     * @param type $password2
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validatePasswords($password1, $password2, &$errors)
     {
         if (!isset($password1) || $password1 === '')
@@ -83,6 +98,12 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates the captcha code provided by the user against the one stored in the session. 
+     * Done automatically by "->check($captchaCode)" method.
+     * @param type $captchaCode The code that the user provided.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateCaptcha($captchaCode, &$errors)
     {
         require_once dirname(__FILE__) . '/../securimage/securimage.php';
@@ -93,6 +114,12 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * General validation for a field, makes sure it is set and not empty.
+     * @param type $field The field value to validate.
+     * @param type $fieldname The name of the field.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateField($field, $fieldname, &$errors)
     {
         if (isset($field))
@@ -108,6 +135,11 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates a post title according to our decided validation rules.
+     * @param type $title The title to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validatePostTitle($title, &$errors)
     {
         if (isset($title))
@@ -130,6 +162,11 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates a post content according to our decided validation rules.
+     * @param type $content The content to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validatePostContent($content, &$errors)
     {
         if (isset($content))
@@ -152,6 +189,12 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates the user description according to our decided validation rules.
+     * @param type $description The description to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     * @return type
+     */
     function validateUserDescription($description, &$errors)
     {
         if (isset($description))
@@ -170,6 +213,12 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates the users display name according to our decided validation rules. Also checks if it exists.
+     * @param type $displayName The display name to validate.
+     * @param type $userId The user id.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateDisplayName($displayName, $userId, &$errors)
     {
         if (isset($displayName))
@@ -196,6 +245,14 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates that the provided file is an image. Only allows 'jpg', 'png' and 'gif' extensions and size below '500000'. 
+     * @param type $image The file to check. Should be an image.
+     * @param type $targetImage The path to the newly uploaded file, if it gets uploaded.
+     * @param type $imageFileType The extension type.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     * @return type
+     */
     function validateImage($image, $targetImage, $imageFileType, &$errors)
     {
         //Higly inspired by the code from this link: https://www.w3schools.com/php/php_file_upload.asp
@@ -228,6 +285,11 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates the content of a comment according to our decided validation rules.
+     * @param type $content The content of the comment to validate.
+     * @param type $errors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateComment($content, &$errors)
     {
         if (isset($content) && is_string($content))
@@ -243,6 +305,11 @@ class ValidationHandler {
         }
     }
 
+    /**
+     * Validates the CSRF token that the user sends with his POST requests against the one kept in the "$_SESSION" variable.
+     * @param type $token The token that the user sent.
+     * @param type $valErrors An OUT array parameter for all errors that might occur during the validation.
+     */
     function validateToken($token, &$valErrors)
     {
         if (!empty($token))

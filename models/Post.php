@@ -3,7 +3,6 @@
 /**
  * Description of Post
  * Represents a post made by users as it is stored in the database.
- * @author User
  */
 class Post {
 

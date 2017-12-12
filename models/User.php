@@ -3,7 +3,6 @@
 /**
  * Description of User
  * Represents the user data structure as it is stored in the database.
- * @author Kristinn
  */
 class User {
 

@@ -90,7 +90,7 @@ class UserHandler {
     }
 
     /**
-     * Used to check if a user exists.
+     * Checks to see if a user exists.
      * @param type $username The user's username.
      * @return boolean
      */
@@ -105,10 +105,18 @@ class UserHandler {
         return false;
     }
 
+    /**
+     * Checks to see if a display name already exists.
+     * @param type $displayName The display name to check for.
+     * @param type $userId The id of the user that is attempting to change his display name.
+     * @return boolean
+     */
     function displayNameExists($displayName, $userId)
     {
         $dbHandler = $this->getDbHandler();
         $users = $dbHandler->getRecords("User", "Display_name", $displayName, PDO::PARAM_STR);
+        //NOTE: The user id is used so that if the user is changing his description but does not alter his display name
+        //then he wont get a "Already taken" error (since it is him that has already taken it).
         if (count($users) > 0 && $users[0][0] != $userId)
         {
             return true;
@@ -118,7 +126,6 @@ class UserHandler {
 
     /**
      * Checks to see if the user already exists in the database.
-     * @param type $dbHandler The DatabaseHandler instance to use.
      * @param type $username The user's username.
      * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
      * @return boolean Returns true if the user existed, else false.
@@ -148,7 +155,7 @@ class UserHandler {
      * Attempts to get a user model that represents the user in the database.
      * @param type $user_id The user's id.
      * @param type $user An OUT variable, if the user exist this will hold the users information from the database.
-     * @return boolean Returns true if the user existed, else false.
+     * @return boolean Returns true if the user existed.
      */
     function getUserById($userId, &$user)
     {
@@ -170,20 +177,36 @@ class UserHandler {
         }
         return false;
     }
-
+    
+    /**
+     * Updates the user profile with a new display name and description.
+     * @param type $userId The id of the user.
+     * @param type $newDisplayName The new display name.
+     * @param type $newDescription The new description.
+     */
     function updateUserProfile($userId, $newDisplayName, $newDescription)
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Display_name", $newDisplayName, "Id", $userId, PDO::PARAM_STR);
         $dbHandler->updateRecord("User", "User_description", $newDescription, "Id", $userId, PDO::PARAM_STR);
     }
-
+    
+    /**
+     * Updates the profile image path on the user table.
+     * @param type $userId The id of the user.
+     * @param type $newImagePath The new image path.
+     */
     function updateUserProfileImage($userId, $newImagePath)
     {
         $dbHandler = $this->getDbHandler();
         $dbHandler->updateRecord("User", "Profile_image_path", $newImagePath, "Id", $userId, PDO::PARAM_STR);
     }
 
+    /**
+     * Checks if the user has administration rights.
+     * @param type $userId The id of the user.
+     * @return boolean Returns true if the user has administration rights.
+     */
     function isAdmin($userId)
     {
         $user = null;
@@ -197,6 +220,10 @@ class UserHandler {
         return false;
     }
 
+    /**
+     * Updates the field "Is_banned" on the user table to 'true'.
+     * @param type $userId The id of the user.
+     */
     function banUser($userId)
     {
         $dbHandler = $this->getDbHandler();
@@ -205,7 +232,6 @@ class UserHandler {
 
     /**
      * Increments the 'Failed_login_attempts' column by 1.
-     * @param type $dbHandler The database handler instance to use.
      * @param type $username The user's username.
      */
     private function incrementFailedLogins($username)
@@ -217,7 +243,6 @@ class UserHandler {
 
     /**
      * Resets the 'Failed_login_attempts' column to 0.
-     * @param type $dbHandler The database handler instance to use.
      * @param type $username The user's username.
      */
     private function resetFailedLogins($username, &$user)

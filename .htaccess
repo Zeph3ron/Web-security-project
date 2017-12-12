@@ -21,9 +21,20 @@ php_value session.cache_limiter nocache
 php_value session.cookie_lifetime 0
 php_flag session.cookie_httponly on
 php_flag session.cookie_secure off
+php_flag display_errors off
 
 php_value session.gc_maxlifetime 1440
 php_value session.gc_probability 1
 php_value session.gc_divisor 100
 
+# Dont allow directory navigation
 Options -Indexes
+
+# Makes sure that the server doesn't display errors
+php_flag display_errors off
+
+# Redirects to https
+# RewriteEngine on
+# RewriteCond %{HTTP_HOST} ^207.154.211.248 [NC]
+# RewriteCond %{SERVER_PORT} 80
+# RewriteRule ^(.*)$ https://207.154.211.248/$1 [R,L]
